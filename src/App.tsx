@@ -4,11 +4,12 @@ import { BrowserRouter } from "react-router-dom";
 import "./App.css";
 import AppRouter from "./views/AppRouter";
 import { store } from "./redux/store";
-import { createTheme, ThemeProvider } from "@material-ui/core";
+import { ThemeProvider } from "@emotion/react";
+import { createTheme } from "@mui/material";
+import { palette } from "./assets/styles/palette";
 
 const theme = createTheme({
   palette: {
-    type: "light",
     primary: {
       // contrastText: 'rgba(0, 0, 0, 0.87)',
       // dark: 'rgb(100, 141, 174)',
@@ -31,6 +32,32 @@ const theme = createTheme({
   shape: {
     borderRadius: 0,
   },
+  components: {
+    MuiTextField: {
+      defaultProps: {
+        variant: "outlined"
+      },
+      styleOverrides: {
+        root: {
+          "& label.Mui-focused": {
+            color: palette.accent,
+          },
+          "& .MuiOutlinedInput-root": {
+            "& fieldset": {
+              borderRadius: "0",
+              borderColor: palette.primary,
+            },
+            "&:hover fieldset": {
+              borderColor: palette.accent,
+            },
+            "&.Mui-focused fieldset": {
+              borderColor: palette.accent,
+            },
+          }
+        }
+      }
+    }
+  }
 });
 
 function App() {

@@ -1,13 +1,7 @@
 import React from "react";
-import {
-  Card,
-  CardContent,
-  Container,
-  Grid,
-  Typography,
-} from "@material-ui/core";
 import SectionHeader from "../../components/common/SectionHeader";
 import { getString } from "../../../utils/localization";
+import { Container, Grid, Card, CardContent, Typography } from "@mui/material";
 
 function TermsPage(props: any) {
   return (

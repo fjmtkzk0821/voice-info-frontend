@@ -1,5 +1,5 @@
-import { Paper, List, ListItemIcon, ListItemText, Divider, ListItem } from "@material-ui/core";
-import { AccountBox, ArtTrack, Edit, Mic } from "@material-ui/icons";
+import { AccountBox, ArtTrack, Edit, Mic } from "@mui/icons-material";
+import { Paper, List, ListItem, ListItemIcon, ListItemText, Divider } from "@mui/material";
 import { withRouter } from "react-router";
 import { getString } from "../../../../utils/localization";
 

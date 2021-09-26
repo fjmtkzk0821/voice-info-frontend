@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { apiGetHome } from "../../utils/services/api";
+import { apiHomeGet } from "../../utils/services/api";
+import { dismissBackdrop, setBackdrop } from "./backdropSlice";
 
 interface HomePageState {
   init: Boolean;
@@ -28,10 +29,13 @@ export const homePageSlice = createSlice({
 
 export const fetchDataAsync = () => async (dispatch: any) => {
   try {
-    let res = await apiGetHome();
+    dispatch(setBackdrop());
+    let res = await apiHomeGet();
     dispatch(init(res.data));
   } catch (e) {
     console.log(e);
+  } finally {
+    dispatch(dismissBackdrop());
   }
 };
 

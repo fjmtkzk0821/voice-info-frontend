@@ -1,9 +1,9 @@
 import React from "react";
-import { Card, Container, Grid } from "@material-ui/core";
-import { Bathtub } from "@material-ui/icons";
+import { Bathtub } from "@mui/icons-material";
 import MessageBlock from "../../components/common/MessageBlock";
 import SectionHeader from "../../components/common/SectionHeader";
 import { getString } from "../../../utils/localization";
+import { Container, Grid, Card } from "@mui/material";
 
 function ManualPage(props: any) {
   return (

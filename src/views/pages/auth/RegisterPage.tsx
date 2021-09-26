@@ -1,19 +1,3 @@
-import {
-  Box,
-  Button,
-  Card,
-  CardContent,
-  Container,
-  createStyles,
-  Grid,
-  Link,
-  MenuItem,
-  TextField,
-  Theme,
-  Typography,
-  withStyles,
-  WithStyles,
-} from "@material-ui/core";
 import React, { Component, Fragment } from "react";
 import { getString } from "../../../utils/localization";
 import AlertMessage from "../../components/common/AlertMessage";
@@ -24,28 +8,50 @@ import { bindActionCreators } from "redux";
 import { registerAsync } from "../../../redux/slices/userSlice";
 import { clearAlertSync } from "../../../redux/slices/alertMessageSlice";
 import { connect } from "react-redux";
+import { css, Theme } from "@emotion/react";
+import {
+  createStyles,
+  Container,
+  Box,
+  Card,
+  CardContent,
+  Typography,
+  TextField,
+  MenuItem,
+  Button,
+  Grid,
+  withStyles,
+  Link,
+} from "@mui/material";
+import { createTheme } from "@mui/material/styles";
+import { styled } from "@mui/system";
 
-const styles = (theme: Theme) =>
-  createStyles({
-    mt4: {
-      marginTop: theme.spacing(4),
-    },
-    pt8: {
-      paddingTop: theme.spacing(8),
-    },
-    paper: {
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "center",
-    },
-    form: {
-      width: "100%", // Fix IE 11 issue.
-      marginTop: theme.spacing(1),
-    },
-    submit: {
-      margin: theme.spacing(3, 0, 2),
-    },
-  });
+// const styles = (theme: Theme) =>
+//   createStyles({
+//     mt4: {
+//       marginTop: theme.spacing(4),
+//     },
+//     pt8: {
+//       paddingTop: theme.spacing(8),
+//     },
+//     paper: {
+//       display: "flex",
+//       flexDirection: "column",
+//       alignItems: "center",
+//     },
+// form: {
+//   width: "100%", // Fix IE 11 issue.
+//   marginTop: theme.spacing(1),
+// },
+//     submit: {
+//       margin: theme.spacing(3, 0, 2),
+//     },
+//   });
+
+const Form = styled('form')({
+  width: "100%", // Fix IE 11 issue.
+  marginTop: "8px",
+});
 
 interface IState {
   role: string;
@@ -54,7 +60,7 @@ interface IState {
   confirmPassword: string;
 }
 
-class RegisterPage extends Component<any & WithStyles<typeof styles>, IState> {
+class RegisterPage extends Component<any, IState> {
   constructor(props: any) {
     super(props);
     this.state = {
@@ -89,7 +95,8 @@ class RegisterPage extends Component<any & WithStyles<typeof styles>, IState> {
   };
 
   render() {
-    const { classes } = this.props;
+    const theme = createTheme();
+    //const { classes } = this.props;
     return (
       <Fragment>
         <NavigationBar />
@@ -99,16 +106,19 @@ class RegisterPage extends Component<any & WithStyles<typeof styles>, IState> {
               <Card>
                 <AlertMessage />
                 <CardContent>
-                  <div className={classes.paper}>
+                  <Box display="flex" flexDirection="column" alignItems="center">
                     <img src="/images/logo512.png" height={128} />
                     <Typography
-                      className={classes.mt4}
+                      css={css`
+                        margin-top: ${theme.spacing(4)};
+                      `}
                       component="h1"
                       variant="h5"
                     >
                       {getString("ja", "link", "register")}
                     </Typography>
-                    <form className={classes.form} onSubmit={this.handleSubmit}>
+                    <Form onSubmit={this.handleSubmit}
+                    >
                       <TextField
                         select
                         variant="outlined"
@@ -171,7 +181,9 @@ class RegisterPage extends Component<any & WithStyles<typeof styles>, IState> {
                         fullWidth
                         variant="contained"
                         color="primary"
-                        className={classes.submit}
+                        css={css`
+                          margin: ${theme.spacing(3, 0, 2)};
+                        `}
                       >
                         {getString("ja", "link", "register")}
                       </Button>
@@ -186,8 +198,8 @@ class RegisterPage extends Component<any & WithStyles<typeof styles>, IState> {
                           </Link>
                         </Grid>
                       </Grid>
-                    </form>
-                  </div>
+                    </Form>
+                  </Box>
                 </CardContent>
               </Card>
             </Box>
@@ -199,12 +211,7 @@ class RegisterPage extends Component<any & WithStyles<typeof styles>, IState> {
 }
 
 function mapDispatchToProps(dispatch: AppDispatch) {
-  return bindActionCreators(
-    { registerAsync, clearAlertSync },
-    dispatch
-  );
+  return bindActionCreators({ registerAsync, clearAlertSync }, dispatch);
 }
 
-export default withStyles(styles)(
-  connect(null, mapDispatchToProps)(RegisterPage)
-);
+export default connect(null, mapDispatchToProps)(RegisterPage);

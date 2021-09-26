@@ -1,63 +1,87 @@
-import {
-  Card,
-  CardContent,
-  CardMedia,
-  Divider,
-  Grid,
-  List,
-  ListItem,
-  ListItemText,
-  makeStyles,
-  Typography,
-  Theme,
-} from "@material-ui/core";
-
 import { palette } from "../../../assets/styles/palette";
 import { getString } from "../../../utils/localization";
-
-import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
-
-const useStyle = makeStyles((theme: Theme) => ({
-  root: {
-    backgroundColor: palette.white,
-    display: "flex",
-    height: "180px",
-    "@media (max-width: 768px)": {
-      // flexDirection: "column",
-      // height: "240px",
-    },
-  },
-  details: {
-    display: "flex",
-    flexDirection: "column",
-    flex: "0 0 15%",
-    margin: "auto",
-    alignItems: "center",
-  },
-  header: {
-    textAlign: "center",
-    color: palette.primary,
-  },
-  overflowAuto: {
-    maxHeight: "164px",
-    overflow: "auto",
-  },
-}));
+import { useAppSelector } from "../../../redux/hooks";
+import { RootState } from "../../../redux/store";
+import { Theme } from "@emotion/react";
+import {
+  makeStyles,
+  Card,
+  Grid,
+  CardContent,
+  Typography,
+  List,
+  ListItem,
+  ListItemIcon,
+  Chip,
+  ListItemText,
+} from "@mui/material";
+import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
+// const useStyle = makeStyles((theme: Theme) => ({
+//   root: {
+//     backgroundColor: palette.white,
+//     display: "flex",
+//     height: "180px",
+//     "@media (max-width: 768px)": {
+//       // flexDirection: "column",
+//       // height: "240px",
+//     },
+//   },
+//   details: {
+//     display: "flex",
+//     flexDirection: "column",
+//     flex: "0 0 15%",
+//     margin: "auto",
+//     alignItems: "center",
+//   },
+//   header: {
+//     textAlign: "center",
+//     color: palette.primary,
+//   },
+//   overflowAuto: {
+//     maxHeight: "164px",
+//     overflow: "auto",
+//   },
+// }));
 
 function SectionNotices() {
-  const classes = useStyle();
+  const notices = useAppSelector((state: RootState) => state.homePage.notices);
 
   return (
-    <Card className={classes.root} variant="outlined">
-      <Grid container direction="row" justifyContent="center" alignItems="center">
+    <Card
+      sx={{
+        backgroundColor: palette.white,
+        display: "flex",
+        height: "180px",
+        "@media (max-width: 768px)": {
+          // flexDirection: "column",
+          // height: "240px",
+        },
+      }}
+      variant="outlined"
+    >
+      <Grid
+        container
+        direction="row"
+        justifyContent="center"
+        alignItems="center"
+      >
         <Grid item xs={3}>
-          <CardContent className={classes.details}>
+          <CardContent sx={{
+            display: "flex",
+            flexDirection: "column",
+            flex: "0 0 15%",
+            margin: "auto",
+            alignItems: "center",
+          }}>
             <InfoOutlinedIcon
               fontSize="large"
               style={{ color: palette.accent }}
             />
-            <Typography component="h5" variant="h5" className={classes.header}>
-                test
+            <Typography component="h5" variant="h5" sx={{
+              textAlign: "center",
+              color: palette.primary,
+            }}>
+              test
               {/* {getString(props.lang, "home", "info")} */}
             </Typography>
           </CardContent>
@@ -71,24 +95,34 @@ function SectionNotices() {
             alignItems="flex-start"
           >
             <Grid item xs={12}>
-              <List className={classes.overflowAuto}>
-                {/* {props.list &&
-                  props.list.map((element: any, index: Number) => {
+              <List sx={{
+                maxHeight: "164px",
+                overflow: "auto",
+              }}>
+                {notices &&
+                  notices.map((notice: any, index: Number) => {
                     return (
                       <ListItem
-                        key={`ann-listitem-${index}`}
+                        key={`li-ann-${index}`}
                         button
                         onClick={() => {
-                          props.onClick(element);
+                          // props.onClick(element);
                         }}
                       >
+                        <ListItemIcon>
+                          <Chip label={notice.type} />
+                        </ListItemIcon>
                         <ListItemText
                           className="text-accent"
-                          primary={`[${element.date}] ${element.title}`}
+                          primary={notice.title}
+                        />
+                        <ListItemText
+                          className="text-accent"
+                          primary={notice.date}
                         />
                       </ListItem>
                     );
-                  })} */}
+                  })}
               </List>
             </Grid>
           </Grid>

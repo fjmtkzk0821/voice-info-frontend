@@ -1,11 +1,3 @@
-import {
-  Box,
-  Container,
-  Grid,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
-} from "@material-ui/core";
 import { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -14,19 +6,19 @@ import { getString } from "../../../utils/localization";
 import SectionAction from "./SectionAction";
 import SectionList from "./SectionList";
 import SectionNotices from "./SectionNotices";
-import {
-  AccountTree,
-  Mic,
-  EventNoteOutlined,
-  EmojiFoodBeverageSharp,
-  Bathtub,
-} from "@material-ui/icons";
 import { palette } from "../../../assets/styles/palette";
 import AlertMessage from "../../components/common/AlertMessage";
 import MessageBlock from "../../components/common/MessageBlock";
 import NavigationBar from "../../components/navigation/NavigationBar";
 import { AppDispatch, RootState } from "../../../redux/store";
 import { clearAlertSync } from "../../../redux/slices/alertMessageSlice";
+import SimpleSeiyuCard from "../../components/SimpleSeiyuCard";
+import { Container, Grid, ListItem, ListItemIcon, ListItemText } from "@mui/material";
+import MicIcon from "@mui/icons-material/Mic";
+import EmojiFoodBeverageSharpIcon from "@mui/icons-material/EmojiFoodBeverageSharp";
+import AccountTreeIcon from "@mui/icons-material/AccountTree";
+import EventNoteOutlinedIcon from "@mui/icons-material/EventNoteOutlined";
+import BathtubIcon from "@mui/icons-material/Bathtub";
 
 class HomePage extends Component<any, any> {
   // constructor(props: any) {
@@ -55,15 +47,25 @@ class HomePage extends Component<any, any> {
               <SectionList
                 title={getString("ja", "home", "seiyuBlock")}
                 icon={
-                  <Mic fontSize="large" style={{ color: palette.accent }} />
+                  <MicIcon fontSize="large" style={{ color: palette.accent }} />
                 }
               >
                 {this.props.seiyuList.length > 0 ? (
-                  <Box></Box>
+                  this.props.seiyuList.map((seiyu: any, index: number) => (
+                    <SimpleSeiyuCard
+                      key={`card-home-seiyu-${index}`}
+                      avatar={seiyu.avatar.link}
+                      name={seiyu.name}
+                      desc={seiyu.intro}
+                      onClick={() => {
+                        this.props.history.push(`/seiyu/${seiyu.uid}`);
+                      }}
+                    />
+                  ))
                 ) : (
                   <MessageBlock
                     icon={
-                      <EmojiFoodBeverageSharp
+                      <EmojiFoodBeverageSharpIcon
                         fontSize="small"
                         color="disabled"
                       />
@@ -76,7 +78,7 @@ class HomePage extends Component<any, any> {
                   onClick={() => this.props.history.push("/seiyu")}
                 >
                   <ListItemIcon>
-                    <AccountTree></AccountTree>
+                    <AccountTreeIcon />
                   </ListItemIcon>
                   <ListItemText>
                     {getString("ja", "link", "seiyu")}へ
@@ -88,14 +90,14 @@ class HomePage extends Component<any, any> {
               <SectionList
                 title="イベント"
                 icon={
-                  <EventNoteOutlined
+                  <EventNoteOutlinedIcon
                     fontSize="large"
                     style={{ color: palette.accent }}
                   />
                 }
               >
                 <MessageBlock
-                  icon={<Bathtub fontSize="small" color="disabled" />}
+                  icon={<BathtubIcon fontSize="small" color="disabled" />}
                   message="COMING SOON"
                 />
               </SectionList>

@@ -1,13 +1,13 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import type { RootState } from "../store";
+import type { AppDispatch, RootState } from "../store";
 
 interface AudioPlayerState {
-    visible: Boolean,
+    enable: Boolean,
     current: any,
 }
 
 const initialState: AudioPlayerState = {
-    visible: false,
+    enable: false,
     current: null
 }
 
@@ -16,15 +16,23 @@ export const audioPlayerSlice = createSlice({
     initialState,
     reducers: {
         set: (state: AudioPlayerState, action: PayloadAction<any>) => {
-            state.visible = true;
+            state.enable = true;
             state.current = action.payload;
         },
         dispose: (state: AudioPlayerState) => {
-            state.visible = false;
+            state.enable = false;
             state.current = null;
         }
     }
 });
+
+export const setAudio = (audio: any) => (dispatch: AppDispatch) => {
+    dispatch(set(audio));
+}
+
+export const disposeAudio = () => (dispatch: AppDispatch) => {
+    dispatch(dispose());
+}
 
 export const {set, dispose} = audioPlayerSlice.actions;
 

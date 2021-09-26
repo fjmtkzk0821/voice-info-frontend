@@ -1,40 +1,43 @@
+import { Card, CardContent, Typography, CardActions } from "@mui/material";
 import React from "react";
-import {
-  Button,
-  Card,
-  CardActions,
-  CardContent,
-  makeStyles,
-  Typography,
-} from "@material-ui/core";
 import { palette } from "../../../assets/styles/palette";
 
-const userStyle = makeStyles((theme) => ({
-  root: {
-    display: "flex",
-    flexDirection: "column",
-    backgroundColor: palette.white,
-  },
-  details: {
-    display: "flex",
-    flexDirection: "column",
-    margin: "auto",
-    alignItems: "center",
-  },
-  header: {
-    textAlign: "center",
-    color: palette.primary,
-  },
-}));
+// const userStyle = makeStyles((theme) => ({
+//   root: {
+//     display: "flex",
+//     flexDirection: "column",
+//     backgroundColor: palette.white,
+//   },
+//   details: {
+//     display: "flex",
+//     flexDirection: "column",
+//     margin: "auto",
+//     alignItems: "center",
+//   },
+//   header: {
+//     textAlign: "center",
+//     color: palette.primary,
+//   },
+// }));
 
 export default function SectionList(props: any) {
-  const classes = userStyle();
-
   return (
-    <Card className={classes.root} variant="outlined">
-      <CardContent className={classes.details}>
+    <Card sx={{
+      display: "flex",
+    flexDirection: "column",
+    backgroundColor: palette.white,
+    }} variant="outlined">
+      <CardContent sx={{
+        display: "flex",
+        flexDirection: "column",
+        margin: "auto",
+        alignItems: "center",
+      }}>
         {props.icon}
-        <Typography component="h5" variant="h5" className={classes.header}>
+        <Typography component="h5" variant="h5" sx={{
+          textAlign: "center",
+          color: palette.primary,
+        }}>
           {props.title}
         </Typography>
       </CardContent>

@@ -42,7 +42,7 @@ export default class SeiyuQueryFilter {
 
   filter(item: any) {
     for (let key of Object.keys(this.able))
-      if (item.able[key] !== this.able[key]) return false;
+      if (this.able[key] && !item.able[key]) return false;
     if (this.charactor.length > 0) {
       let exist = false;
       for (let chara of item.jozu) {

@@ -1,47 +1,78 @@
+/** @jsxImportSource @emotion/react */
+import { Apps } from "@mui/icons-material";
 import {
-  Button,
-  Divider,
   Drawer,
-  Grid,
-  List,
+  Divider,
   ListItem,
   ListItemText,
-  makeStyles,
-} from "@material-ui/core";
-import { Apps } from "@material-ui/icons";
+  Grid,
+  Button,
+  List
+} from "@mui/material";
+import { styled } from "@mui/system";
 import React, { Fragment } from "react";
 import { withRouter } from "react-router";
-import {
-  navDrawerListStyle,
-  navDrawerStyle,
-  sectionActionStyle,
-} from "../../../assets/styles/core";
+import { palette } from "../../../assets/styles/palette";
 import { getString } from "../../../utils/localization";
 import RouterLink from "../common/RouterLink";
 import NavButton from "./NavButton";
 
-const useStyles = makeStyles({
-  root: {
-    display: "none",
-    minHeight: "inherit",
-    "@media (max-width: 960px)": {
-      display: "block",
-    },
+// const useStyles = makeStyles({
+//   root: {
+//     display: "none",
+//     minHeight: "inherit",
+//     "@media (max-width: 960px)": {
+//       display: "block",
+//     },
+//   },
+//   drawer: {
+//     width: 250,
+//   },
+//   drawerPaper: navDrawerStyle.paper,
+//   drawerHeader: {
+//     height: "120px",
+//     padding: "12px 16px",
+//   },
+//   listItemRoot: navDrawerListStyle.root,
+//   listItemButton: navDrawerListStyle.button,
+// });
+
+const StyledContainer = styled("div")(({ theme }) => ({
+  display: "none",
+  minHeight: "inherit",
+  "@media (max-width: 960px)": {
+    display: "block",
   },
-  drawer: {
-    width: 250,
-  },
-  drawerPaper: navDrawerStyle.paper,
-  drawerHeader: {
-    height: "120px",
-    padding: "12px 16px",
-  },
-  listItemRoot: navDrawerListStyle.root,
-  listItemButton: navDrawerListStyle.button,
+}));
+
+const DrawerContainer = styled("div")({
+  width: "250px",
 });
 
+const DrawerHeaderContainer = styled("div")({
+  height: "120px",
+  padding: "12px 16px",
+});
+
+const ListItemStyle = {
+  color: palette.white,
+  "&:hover": {
+    //borderLeft: "5px solid "+palette.accent
+    background: palette.accent,
+    color: palette.primary,
+  },
+  "& .MuiListItem-button": {
+    color: palette.white,
+    "&:hover": {
+      //borderLeft: "5px solid "+palette.accent
+      background: palette.accent,
+      color: palette.primary,
+    },
+  },
+};
+
 function PortableMenu(props: any) {
-  const classes = useStyles();
+  //const classes = useStyles();
   const { isAuthenticated } = props;
   const [state, setState] = React.useState({
     right: false,
@@ -52,7 +83,7 @@ function PortableMenu(props: any) {
   };
 
   return (
-    <div className={classes.root}>
+    <StyledContainer>
       <Fragment key="right">
         <NavButton to="/setting" onClick={toggleDrawer("right", true)}>
           <Apps />
@@ -65,28 +96,27 @@ function PortableMenu(props: any) {
           <Apps />
         </Button> */}
         <Drawer
-          classes={{
-            paper: classes.drawerPaper,
+          sx={{
+            "& .MuiDrawer-paper": {
+              background: palette.primary,
+            },
           }}
           anchor="right"
           open={state["right"]}
           onClose={toggleDrawer("right", false)}
         >
-          <div className={classes.drawer}>
-            <div className={classes.drawerHeader}>
+          <DrawerContainer>
+            <DrawerHeaderContainer>
               <DrawerHeader
                 isAuth={isAuthenticated}
                 history={props.history}
                 onClose={toggleDrawer("right", false)}
               />
-            </div>
+            </DrawerHeaderContainer>
             <Divider variant="middle" />
             <List>
               <ListItem
-                classes={{
-                  root: classes.listItemRoot,
-                  button: classes.listItemButton,
-                }}
+                sx={ListItemStyle}
                 button
                 component={RouterLink("/")}
                 onClick={toggleDrawer("right", false)}
@@ -94,10 +124,7 @@ function PortableMenu(props: any) {
                 <ListItemText primary={getString("ja", "link", "home")} />
               </ListItem>
               <ListItem
-                classes={{
-                  root: classes.listItemRoot,
-                  button: classes.listItemButton,
-                }}
+                sx={ListItemStyle}
                 button
                 component={RouterLink("events")}
                 onClick={toggleDrawer("right", false)}
@@ -105,10 +132,7 @@ function PortableMenu(props: any) {
                 <ListItemText primary={getString("ja", "link", "event")} />
               </ListItem>
               <ListItem
-                classes={{
-                  root: classes.listItemRoot,
-                  button: classes.listItemButton,
-                }}
+                sx={ListItemStyle}
                 button
                 component={RouterLink("/seiyu")}
                 onClick={toggleDrawer("right", false)}
@@ -116,29 +140,57 @@ function PortableMenu(props: any) {
                 <ListItemText primary={getString("ja", "link", "seiyu")} />
               </ListItem>
             </List>
-          </div>
+          </DrawerContainer>
         </Drawer>
       </Fragment>
-    </div>
+    </StyledContainer>
   );
 }
 
 function DrawerHeader(props: { isAuth: Boolean; history: any; onClose: any }) {
-  const style = sectionActionStyle(true);
-  const useStyle = makeStyles((theme) => ({
-    root: style.root,
-    details: style.details,
-  }));
-  const classes = useStyle();
+  const rootStyle = {
+    minHeight: "120px",
+    height: "100%",
+  };
+  const detailStyle = {
+    width: "100%",
+    "& .MuiButton-root": {
+      //flex: "1",
+      height: "100%",
+      width: "100%",
+    },
+    "& .MuiButton-contained": {
+      backgroundColor: palette.accent,
+      color: palette.white,
+      "&:hover": {
+        backgroundColor: palette.accent,
+        color: palette.primary,
+      },
+    },
+    "& .MuiButton-outlined": {
+      border: `1px solid ${palette.primary}`,
+      color: palette.accent,
+      "&:hover": {
+        border: "1px solid " + palette.accent,
+        color: palette.accent,
+      },
+    },
+  };
+  // const style = sectionActionStyle(true);
+  // const useStyle = makeStyles((theme) => ({
+  //   root: style.root,
+  //   details: style.details,
+  // }));
+  // const classes = useStyle();
 
   if (props.isAuth) {
     return (
-      <Grid container className={classes.root}>
+      <Grid container sx={rootStyle}>
         {/* <Grid item md={12} className={classes.details}></Grid> */}
         <Grid
           item
           md={12}
-          className={classes.details}
+          sx={detailStyle}
           onClick={(e) => {
             props.onClose();
             props.history.push("/setting");
@@ -152,8 +204,8 @@ function DrawerHeader(props: { isAuth: Boolean; history: any; onClose: any }) {
     );
   } else {
     return (
-      <Grid container className={classes.root}>
-        <Grid item md={12} className={classes.details}>
+      <Grid container sx={rootStyle}>
+        <Grid item md={12} sx={detailStyle}>
           <Button
             variant="contained"
             disableElevation
@@ -168,7 +220,7 @@ function DrawerHeader(props: { isAuth: Boolean; history: any; onClose: any }) {
         <Grid
           item
           md={12}
-          className={classes.details}
+          sx={detailStyle}
           onClick={(e) => {
             props.onClose();
             props.history.push("/login");

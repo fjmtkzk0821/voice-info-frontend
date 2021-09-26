@@ -1,14 +1,5 @@
-import {
-  Container,
-  Grid,
-  Paper,
-  List,
-  ListItemIcon,
-  ListItemText,
-  Divider,
-  ListItem,
-} from "@material-ui/core";
-import { AccountBox, ArtTrack, Edit, ExitToApp, Mic } from "@material-ui/icons";
+
+import { AccountBox, ArtTrack, Edit, ExitToApp, Mic } from "@mui/icons-material";
 import { Component } from "react";
 import { bindActionCreators } from "redux";
 import { AppDispatch } from "../../../../redux/store";
@@ -16,12 +7,16 @@ import { getString } from "../../../../utils/localization";
 import SectionHeader from "../../../components/common/SectionHeader";
 import { logoutAsync } from "../../../../redux/slices/userSlice";
 import { connect } from "react-redux";
+import NavigationBar from "../../../components/navigation/NavigationBar";
+import { Container, Grid, Paper, List, ListItem, ListItemIcon, ListItemText, Divider } from "@mui/material";
 
 class SettingPage extends Component<any, any> {
   render() {
       const {history} = this.props;
     return (
-      <Container>
+      <div className="mt-default">
+        <NavigationBar />
+        <Container>
         <Grid container spacing={2}>
           <Grid item md={12} sm={12} xs={12}>
             <SectionHeader title={getString("ja", "link", "setting")} />
@@ -103,6 +98,7 @@ class SettingPage extends Component<any, any> {
           </Grid>
         </Grid>
       </Container>
+      </div>
     );
   }
 }

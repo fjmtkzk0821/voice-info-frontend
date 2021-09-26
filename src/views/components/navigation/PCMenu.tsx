@@ -1,22 +1,31 @@
-import { makeStyles } from "@material-ui/core";
+import { css } from "@emotion/react";
+import { styled } from "@mui/material";
 import { getString } from "../../../utils/localization";
 import NavButton from "./NavButton";
 
-const useStyles = makeStyles({
-  root: {
-    display: "block",
-    minHeight: "inherit",
-    "@media (max-width: 960px)": {
-      display: "none",
-    },
+// const useStyles = makeStyles({
+//   root: {
+//     display: "block",
+//     minHeight: "inherit",
+//     "@media (max-width: 960px)": {
+//       display: "none",
+//     },
+//   },
+// });
+
+const StyledContainer = styled("div")(({ theme }) => ({
+  display: "block",
+  minHeight: "inherit",
+  "@media (max-width: 960px)": {
+    display: "none",
   },
-});
+}));
 
 export default function PCMenu(props: any) {
-  const classes = useStyles();
+  //const classes = useStyles();
   const { isAuthenticated } = props;
   return (
-    <div className={classes.root}>
+    <StyledContainer>
       <NavButton to="/" isLink>
         {getString("ja", "link", "home")}
       </NavButton>
@@ -42,6 +51,6 @@ export default function PCMenu(props: any) {
           {getString("ja", "link", "setting")}
         </NavButton>
       )}
-    </div>
+    </StyledContainer>
   );
 }

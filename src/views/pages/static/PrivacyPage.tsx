@@ -1,11 +1,5 @@
+import { Container, Grid, Card, CardContent, Typography } from "@mui/material";
 import React from "react";
-import {
-  Card,
-  CardContent,
-  Container,
-  Grid,
-  Typography,
-} from "@material-ui/core";
 import { getString } from "../../../utils/localization";
 import SectionHeader from "../../components/common/SectionHeader";
 

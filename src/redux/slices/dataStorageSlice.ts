@@ -1,10 +1,16 @@
 import { createSlice, current, PayloadAction } from "@reduxjs/toolkit";
-import { apiSeiyuList } from "../../utils/services/api";
+import { getErrorMessage } from "../../objects/BaseMessage";
+import { UnknownError } from "../../utils/presetMessage";
+import { apiSeiyuGet, apiSeiyuListGet } from "../../utils/services/api";
+import { AppDispatch } from "../store";
+import { setAlert } from "./alertMessageSlice";
+import { setBackdrop, dismissBackdrop } from "./backdropSlice";
 
 interface DataStorageState {
   seiyuData: {
     init: Boolean;
     list: Array<any>;
+    current: any;
     config: {
       currentPage: number;
       totalPage: number;
@@ -17,6 +23,7 @@ const initialState: DataStorageState = {
   seiyuData: {
     init: false,
     list: [],
+    current: null,
     config: {
       currentPage: 1,
       totalPage: 1,
@@ -30,28 +37,66 @@ export const dataStorageSlice = createSlice({
   initialState,
   reducers: {
     setSeiyuData: (state: DataStorageState, action: PayloadAction<any>) => {
-      state.seiyuData = {
-        init: true,
-        list: action.payload,
-        config: {
-          currentPage: 1,
-          totalPage: Math.ceil(action.payload.size / 15),
-          pageSize: 15,
-        },
+      state.seiyuData.init = true;
+      state.seiyuData.list = action.payload;
+      state.seiyuData.config = {
+        currentPage: 1,
+        totalPage: Math.ceil(action.payload.size / 15),
+        pageSize: 15,
       };
+      // state.seiyuData = {
+      //   init: true,
+      //   list: action.payload,
+      //   config: {
+      //     currentPage: 1,
+      //     totalPage: Math.ceil(action.payload.size / 15),
+      //     pageSize: 15,
+      //   },
+      // };
+    },
+    setCurrentData: (state: DataStorageState, action: PayloadAction<any>) => {
+      state.seiyuData.current = action.payload;
     },
   },
 });
 
-export const fetchSeiyuDataAsync = (page: number) => async (dispatch: any) => {
+export const fetchSeiyuListDataAsync = () => async (dispatch: any) => {
   try {
-    let res = await apiSeiyuList();
+    dispatch(setBackdrop());
+    let res = await apiSeiyuListGet();
     dispatch(setSeiyuData(res.data));
-  } catch (e) {
-    console.log(e);
+  } catch (e: any) {
+    if (e.response) {
+      console.log(e);
+      let message = getErrorMessage(e.response.data);
+      dispatch(setAlert(message));
+    } else {
+      dispatch(setAlert(UnknownError));
+    }
+  }finally {
+    dispatch(dismissBackdrop());
   }
 };
 
-export const { setSeiyuData } = dataStorageSlice.actions;
+export const fetchSeiyuProfileAsync =
+  (id: string) => async (dispatch: AppDispatch) => {
+    try {
+      dispatch(setBackdrop());
+      let res = await apiSeiyuGet(id);
+      dispatch(setCurrentData(res.data));
+    } catch (e: any) {
+      if (e.response) {
+        console.log(e);
+        let message = getErrorMessage(e.response.data);
+        dispatch(setAlert(message));
+      } else {
+        dispatch(setAlert(UnknownError));
+      }
+    } finally {
+      dispatch(dismissBackdrop());
+    }
+  };
+
+export const { setSeiyuData, setCurrentData } = dataStorageSlice.actions;
 
 export default dataStorageSlice.reducer;

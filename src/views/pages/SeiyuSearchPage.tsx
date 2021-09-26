@@ -1,16 +1,3 @@
-import {
-  Button,
-  Card,
-  CardContent,
-  Container,
-  createStyles,
-  Grid,
-  MenuItem,
-  TextField,
-  Theme,
-  WithStyles,
-  withStyles,
-} from "@material-ui/core";
 import React, { Component } from "react";
 import { bindActionCreators, compose } from "redux";
 import { palette } from "../../assets/styles/palette";
@@ -21,14 +8,30 @@ import AlertMessage from "../components/common/AlertMessage";
 import SectionHeader from "../components/common/SectionHeader";
 import FormMultiSelectField from "../components/form/FormMultiSelectField";
 
-import { fetchSeiyuDataAsync } from "../../redux/slices/dataStorageSlice";
+import { clearAlertSync } from "../../redux/slices/alertMessageSlice";
+import { setBackdrop, dismissBackdrop } from "../../redux/slices/backdropSlice";
+import { fetchSeiyuListDataAsync } from "../../redux/slices/dataStorageSlice";
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
-import { Pagination } from "@material-ui/lab";
 import MessageBlock from "../components/common/MessageBlock";
-import { DirectionsWalk } from "@material-ui/icons";
 import SeiyuCard from "../components/SeiyuCard";
 import NavigationBar from "../components/navigation/NavigationBar";
+import { Theme } from "@emotion/react";
+import { DirectionsWalk } from "@mui/icons-material";
+import {
+  createStyles,
+  TextField,
+  Button,
+  Container,
+  Grid,
+  Card,
+  CardContent,
+  MenuItem,
+  Pagination,
+  GlobalStyles,
+} from "@mui/material";
+
+import { alpha, styled } from "@mui/material/styles";
 
 type IStateProps = {
   isInitialized: Boolean;
@@ -37,7 +40,7 @@ type IStateProps = {
 };
 
 type IDispatchProps = {
-  fetchSeiyuDataAsync: any;
+  fetchSeiyuListDataAsync: any;
 };
 
 type IProps = any & IStateProps & IDispatchProps;
@@ -45,6 +48,7 @@ type IProps = any & IStateProps & IDispatchProps;
 interface IState {
   criteria: SeiyuQueryFilter;
   applied: SeiyuQueryFilter;
+  currentPage: number;
 }
 
 const styles = (theme: Theme) =>
@@ -61,40 +65,68 @@ const styles = (theme: Theme) =>
     },
   });
 
-const DefaultTextField = withStyles({
-  root: {
-    "& label.Mui-focused": {
-      color: palette.accent,
-    },
-    "& .MuiOutlinedInput-root": {
-      "& fieldset": {
-        borderColor: palette.primary,
-      },
-      "&:hover fieldset": {
-        borderColor: palette.accent,
-      },
-      "&.Mui-focused fieldset": {
-        borderColor: palette.accent,
-      },
-    },
-  },
-})(TextField);
+// const DefaultTextField = styled(TextField)(({ theme }) => ({
+//   "& label.Mui-focused": {
+//     color: palette.accent,
+//   },
+//   "& .MuiOutlinedInput-root": {
+//     "& fieldset": {
+//       borderColor: palette.primary,
+//     },
+//     "&:hover fieldset": {
+//       borderColor: palette.accent,
+//     },
+//     "&.Mui-focused fieldset": {
+//       borderColor: palette.accent,
+//     },
+//   },
+// }));
 
-const SubmitButton = withStyles({
-  root: {
-    height: "100%",
-    width: "100%",
-    border: "1px solid " + palette.accent,
-    color: palette.accent,
-    "&:hover": {
-      background: palette.accent,
-      color: palette.primary,
-    },
+const SubmitButton = styled(Button)(({ theme }) => ({
+  height: "100%",
+  width: "100%",
+  border: "1px solid " + palette.accent,
+  color: palette.accent,
+  "&:hover": {
+    background: palette.accent,
+    color: palette.primary,
   },
-})(Button);
+}));
+
+// const DefaultTextField = withStyles({
+//   root: {
+//     "& label.Mui-focused": {
+//       color: palette.accent,
+//     },
+//     "& .MuiOutlinedInput-root": {
+//       "& fieldset": {
+//         borderColor: palette.primary,
+//       },
+//       "&:hover fieldset": {
+//         borderColor: palette.accent,
+//       },
+//       "&.Mui-focused fieldset": {
+//         borderColor: palette.accent,
+//       },
+//     },
+//   },
+// })(TextField);
+
+// const SubmitButton = withStyles({
+//   root: {
+//     height: "100%",
+//     width: "100%",
+//     border: "1px solid " + palette.accent,
+//     color: palette.accent,
+//     "&:hover": {
+//       background: palette.accent,
+//       color: palette.primary,
+//     },
+//   },
+// })(Button);
 
 class SeiyuSearchPage extends Component<
-  IProps & WithStyles<typeof styles>,
+  IProps, // & WithStyles<typeof styles>
   IState
 > {
   constructor(props: any) {
@@ -102,13 +134,18 @@ class SeiyuSearchPage extends Component<
     this.state = {
       criteria: new SeiyuQueryFilter(),
       applied: new SeiyuQueryFilter(),
+      currentPage: 1,
     };
     this.handleCriteriaChange = this.handleCriteriaChange.bind(this);
     this.updateFilter = this.updateFilter.bind(this);
+    this.handlePageChange = this.handlePageChange.bind(this);
   }
 
   componentDidMount() {
-    if (!this.props.isInitialized) this.props.fetchSeiyuDataAsync();
+    this.props.setBackdrop();
+    this.props.clearAlertSync();
+    if (!this.props.isInitialized) this.props.fetchSeiyuListDataAsync();
+    this.props.dismissBackdrop();
   }
 
   handleCriteriaChange(event: React.ChangeEvent<HTMLInputElement>) {
@@ -141,17 +178,26 @@ class SeiyuSearchPage extends Component<
 
   updateFilter() {
     this.setState({
+      currentPage: 1,
       applied: SeiyuQueryFilter.clone(this.state.criteria),
     });
   }
 
+  handlePageChange(event: React.ChangeEvent<unknown>, value: number) {
+    this.setState({
+      currentPage: value,
+    });
+  }
+
   render() {
-    const { classes } = this.props;
+    //const { classes } = this.props;
     let filtered = (this.props.seiyuList as Array<any>).filter((seiyu) => {
       return this.state.applied.filter(seiyu);
     });
+    console.log(filtered);
     return (
       <div className="mt-default">
+        <GlobalStyles styles={styles} />
         <NavigationBar />
         <Container>
           <AlertMessage />
@@ -164,20 +210,18 @@ class SeiyuSearchPage extends Component<
                 <CardContent>
                   <Grid container spacing={2}>
                     <Grid item md={6} sm={5} xs={12}>
-                      <DefaultTextField
+                      <TextField
                         label={getString("ja", "profile", "name")}
                         name="name"
                         value={this.state.criteria.name}
                         onChange={this.handleCriteriaChange}
-                        variant="outlined"
                         fullWidth
                       />
                     </Grid>
                     <Grid item md={3} sm={3} xs={12}>
-                      <DefaultTextField
+                      <TextField
                         select
                         label={getString("ja", "profile", "gender")}
-                        variant="outlined"
                         required
                         fullWidth
                         name="gender"
@@ -188,7 +232,7 @@ class SeiyuSearchPage extends Component<
                         <MenuItem value="F">F</MenuItem>
                         <MenuItem value="M">M</MenuItem>
                         <MenuItem value="NG">NG</MenuItem>
-                      </DefaultTextField>
+                      </TextField>
                     </Grid>
                     <Grid item md={3} sm={4} xs={12}>
                       <FormMultiSelectField>
@@ -197,10 +241,19 @@ class SeiyuSearchPage extends Component<
                             <Button
                               key={`filter-${key}`}
                               name={key}
-                              className={
+                              sx={
                                 this.state.criteria.able[key]
-                                  ? classes.buttonActive
-                                  : ""
+                                  ? {
+                                      border: `1px solid ${palette.accent}`,
+                                      background: palette.accent,
+                                      color: palette.primary,
+                                      "&:hover": {
+                                        border: `1px solid ${palette.accent}`,
+                                        background: palette.accent,
+                                        color: palette.primary,
+                                      },
+                                    }
+                                  : {}
                               }
                               onClick={(event) => this.handleAbleChange(key)}
                             >
@@ -212,22 +265,20 @@ class SeiyuSearchPage extends Component<
                     </Grid>
 
                     <Grid item md={5} sm={4} xs={12}>
-                      <DefaultTextField
+                      <TextField
                         label={getString("ja", "profileDetail", "jozu")}
                         name="charactor"
                         value={this.state.criteria.charactor}
                         onChange={this.handleCriteriaChange}
-                        variant="outlined"
                         fullWidth
                       />
                     </Grid>
                     <Grid item md={4} sm={4} xs={12}>
-                      <DefaultTextField
+                      <TextField
                         label={getString("ja", "profileDetail", "samples")}
                         name="sample"
                         value={this.state.criteria.sample}
                         onChange={this.handleCriteriaChange}
-                        variant="outlined"
                         fullWidth
                       />
                     </Grid>
@@ -235,9 +286,7 @@ class SeiyuSearchPage extends Component<
                       <FormMultiSelectField>
                         <Button
                           className={
-                            this.state.criteria.hires
-                              ? classes.buttonActive
-                              : ""
+                            this.state.criteria.hires ? "buttonActive" : ""
                           }
                           onClick={(event) => this.handleHiResChange()}
                         >
@@ -271,16 +320,30 @@ class SeiyuSearchPage extends Component<
             {filtered.length > 0 &&
               filtered.map((seiyu) => {
                 return (
-                  <Grid item md={12} sm={12}>
+                  <Grid
+                    key={`grid-item-seiyu-${seiyu.uid}`}
+                    item
+                    md={12}
+                    sm={12}
+                  >
                     <SeiyuCard
                       seiyu={seiyu}
                       sampleFilter={this.state.applied.sample}
+                      onDetail={() => {
+                        this.props.history.push(`/seiyu/${seiyu.uid}`);
+                      }}
                     />
                   </Grid>
                 );
               })}
             <Grid item xs={12}>
-              <Pagination count={10} variant="outlined" shape="rounded" />
+              <Pagination
+                count={Math.ceil(filtered.length / 15)}
+                page={this.state.currentPage}
+                variant="outlined"
+                shape="rounded"
+                onChange={this.handlePageChange}
+              />
             </Grid>
           </Grid>
         </Container>
@@ -298,14 +361,12 @@ function mapStateToProps(state: RootState) {
 }
 
 function mapDispatchToProps(dispatch: AppDispatch) {
-  return bindActionCreators({ fetchSeiyuDataAsync }, dispatch);
+  return bindActionCreators(
+    { fetchSeiyuListDataAsync, clearAlertSync, setBackdrop, dismissBackdrop },
+    dispatch
+  );
 }
 
-// export default connect(
-//   mapStateToProps,
-//   mapDispatchToProps
-// )(withStyles(styles)(SeiyuSearchPage));
-
-export default withStyles(styles)(
-  withRouter(connect(mapStateToProps, mapDispatchToProps)(SeiyuSearchPage))
+export default withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(SeiyuSearchPage)
 );

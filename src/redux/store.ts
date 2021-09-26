@@ -4,9 +4,11 @@ import homePageReducer from "./slices/homePageSlice";
 import alertMessageReducer from './slices/alertMessageSlice'
 import userReducer from './slices/userSlice'
 import dataStorageReducer from './slices/dataStorageSlice';
+import backdropReducer from './slices/backdropSlice';
 
 export const store = configureStore({
   reducer: {
+    backdrop: backdropReducer,
     alertMessage: alertMessageReducer,
     audioPlayer: audioPlayerReducer,
     homePage: homePageReducer,

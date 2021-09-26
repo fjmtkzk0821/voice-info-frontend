@@ -83,16 +83,23 @@ export class User {
 
   getBasicObject() {
     return {
-      public: this.public,
+      ...this.toFirestore(),
       role: this.role,
       avatar: this.avatar,
-      name: this.name,
-      gender: this.gender,
-      intro: this.intro,
-      twitter: this.twitter,
-      email: this.email,
-      page: this.page,
     };
+  }
+
+  getDetailObject() {
+    return {};
+  }
+
+  static setAsDetailProfile(data:any):any {
+    switch(data.role) {
+      case "seiyu":
+        return Seiyu.fromProfile(data);
+      default:
+        return null;
+    }
   }
 
   static empty() {
@@ -233,6 +240,34 @@ export class Seiyu extends User {
         precaution: "",
         statusDetail: "",
         hires: false,
+      }
+    );
+  }
+
+  static fromProfile(profile: any) {
+    return new Seiyu(
+      {
+        public: profile.public,
+        role: profile.role,
+        avatar: profile.avatar,
+        name: profile.name,
+        gender: profile.gender,
+        intro: profile.intro,
+        twitter: profile.twitter,
+        email: profile.email,
+        page: profile.page,
+      },
+      {
+        able: profile.able,
+        jozu: profile.jozu,
+        wish: profile.wish,
+        equip: profile.equip,
+        experiences: profile.experiences,
+        feeDetail: profile.feeDetail,
+        otherDetail: profile.otherDetail,
+        precaution: profile.precaution,
+        statusDetail: profile.statusDetail,
+        hires: profile.hires,
       }
     );
   }

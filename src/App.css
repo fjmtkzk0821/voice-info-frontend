@@ -22,6 +22,16 @@ body {
 .mt-default {
   margin-top: 80px;
 }
+
+.container {
+  height: 100%;
+  margin: 0 auto 0 auto;
+  /* max-width: 980px; */
+}
+
+.background-default {
+  background-color: #333;
+}
 /* @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);

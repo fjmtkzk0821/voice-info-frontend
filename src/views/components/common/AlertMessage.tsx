@@ -2,9 +2,8 @@ import React from "react";
 import { useAppSelector, useAppDispatch } from "../../../redux/hooks";
 import { clearAlert } from "../../../redux/slices/alertMessageSlice";
 
-import { Box } from "@material-ui/core";
-import { Alert, AlertTitle } from "@material-ui/lab";
 import { MessageType, Severity } from "../../../objects/BaseMessage";
+import { Box, Alert, AlertTitle } from "@mui/material";
 
 export default function AlertMessage() {
   const message = useAppSelector((state) => state.alertMessage.message);
