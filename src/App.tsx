@@ -1,73 +1,39 @@
-import React from "react";
-import { Provider } from "react-redux";
-import { BrowserRouter } from "react-router-dom";
-import "./App.css";
-import AppRouter from "./views/AppRouter";
-import { store } from "./redux/store";
-import { ThemeProvider } from "@emotion/react";
-import { createTheme } from "@mui/material";
-import { palette } from "./assets/styles/palette";
+import React from 'react';
+import './App.css';
+import { createTheme, ThemeProvider } from '@mui/material';
+import { themeOptions } from './utils/Theme';
+import { Provider } from 'react-redux';
+import { store } from './app/store';
+import LoadingBackdrop from './components/LoadingBackdrop';
+import AudioPlayer from './components/AudioPlayer';
+import AppContainer from './AppContainer';
+import Maintenance from './pages/Maintenance';
 
-const theme = createTheme({
-  palette: {
-    primary: {
-      // contrastText: 'rgba(0, 0, 0, 0.87)',
-      // dark: 'rgb(100, 141, 174)',
-      // light: 'rgb(166, 212, 250)',
-      main: "#333",
-    },
-    secondary: {
-      // contrastText: 'rgba(0, 0, 0, 0.87)',
-      // dark: 'rgb(170, 100, 123)',
-      // light: 'rgb(246, 165, 192)',
-      main: "#ff9a00",
-    },
-    // background: {
-    //   default: '#121212',
-    //   level1: '#212121',
-    //   level2: '#333',
-    //   paper: '#424242'
-    // }
-  },
-  shape: {
-    borderRadius: 0,
-  },
-  components: {
-    MuiTextField: {
-      defaultProps: {
-        variant: "outlined"
-      },
-      styleOverrides: {
-        root: {
-          "& label.Mui-focused": {
-            color: palette.accent,
-          },
-          "& .MuiOutlinedInput-root": {
-            "& fieldset": {
-              borderRadius: "0",
-              borderColor: palette.primary,
-            },
-            "&:hover fieldset": {
-              borderColor: palette.accent,
-            },
-            "&.Mui-focused fieldset": {
-              borderColor: palette.accent,
-            },
-          }
-        }
-      }
-    }
-  }
-});
+
+
+const theme = createTheme(themeOptions)
 
 function App() {
+  React.useEffect(() => {
+    // document.getElementById("twttr-embed")
+    var loadScript = (src: string) => {
+      const s = document.createElement('script');
+      s.async = true;
+      s.src = src;
+      document.head.appendChild(s);
+    }
+
+    loadScript(`${process.env.PUBLIC_URL}/twttr-embed.js`)
+  }, [])
+
   return (
     <ThemeProvider theme={theme}>
       <Provider store={store}>
         <div className="App">
-          <BrowserRouter>
-            <AppRouter />
-          </BrowserRouter>
+          {/* <Maintenance /> */}
+          <LoadingBackdrop />
+          <AudioPlayer />
+          <AppContainer />
         </div>
       </Provider>
     </ThemeProvider>

@@ -1,75 +1,109 @@
 {
-    "common": {
-      "save": "セーブ",
-      "back": "戻る",
-      "select": "セレクト",
-      "upload": "アップロード",
-      "file": "ファイル",
-      "filter": "適用する"
-    },
-    "link": {
-      "home": "ホームページ",
-      "event": "イベント一覧",
-      "seiyu": "声優・ボイスコ検索",
-      "setting": "設定",
-      "profile": "プロフィール",
-      "userBasic": "基本情報",
-      "userDetail": "詳細情報",
-      "sampleManagement": "ボイスサンプル管理",
-      "register": "登録",
-      "login": "ログイン",
-      "logout": "ログアウト"
-    },
-    "message": {
-      "haveAccount": "すでにアカウントをお持ちですか？ ログイン",
-      "noAccount": "アカウントを作成",
-      "pwConfirm": "パスワード再入力",
-      "publicProfile": "プロフィールを公開・非公開",
-      "noSampleMatched": "一致するサンプルは見つかりません",
-      "noSeiyuFiltered": "一致する情報は見つかりませんでした",
-      "noSeiyu": "まだ誰も登録していない",
-      "chipHelper": "半角スペース入力でタグを追加しです。",
-      "noSampleUploaded": "何もアップロードされていません"
-    },
-    "home": {
-      "info": "情報",
-      "seiyuBlock": "声優・ボイスコ"
-    },
-    "profile": {
-      "role": "ロール",
-      "icon": "アイコン",
-      "name": "名前",
-      "gender": "性別",
-      "email": "メールアドレス",
-      "password": "パスワード",
-      "intro": "自己紹介",
-      "twitter": "Twitter ID",
-      "page": "個人サイト"
-    },
-    "profileDetail": {
-      "detailInfo": "詳細情報",
-      "able": "ボイス制限",
-      "R": "全年齢",
-      "contact": "連絡先",
-      "dlsiteBlogPart": "DLsite ブログパーツ",
-      "dlsiteScript": "HTMLコード",
-      "hires": "ハイレゾ対応",
-      "jozu": "可能ボイス",
-      "wish": "やりたい役",
-      "statusDetail": "依頼受付状況",
-      "precaution": "注意事項",
-      "feeDetail": "依頼料金",
-      "equip": "収録機材",
-      "otherDetail": "そのほか",
-      "experiences": "経験",
-      "samples": "サンプル",
-      "charactor": "キャラ"
-    },
-    "footer": {
-      "about": "VOICE-INFOについて",
-      "manual": "マニュアル",
-      "terms": "利用規約",
-      "privacy": "プライバシーポリシー"
-    }
+  "common": {
+    "save": "セーブ",
+    "back": "戻る",
+    "select": "セレクト",
+    "upload": "アップロード",
+    "file": "ファイル",
+    "filter": "絞り込み",
+    "reset": "リセット",
+    "delete": "削除",
+    "confirm": "確認",
+    "edit": "編集"
+  },
+  "link": {
+    "home": "ホームページ",
+    "event": "イベント一覧",
+    "seiyu": "声優・ボイスコ検索",
+    "seiyuSetting": "声優設定",
+    "profile": "プロフィールへ",
+    "seiyuReg": "声優登録",
+    "seiyuBasic": "基本情報",
+    "seiyuDetail": "プロフィール情報",
+    "sampleManagement": "ボイスサンプル管理",
+    "register": "登録",
+    "login": "ログイン",
+    "logout": "ログアウト",
+    "information": "お知らせ",
+    "link": "リンク",
+    "account": "アカウント",
+    "accountSetting": "アカウント設定"
+  },
+  "message": {
+    "haveAccount": "すでにアカウントをお持ちですか？",
+    "noAccount": "アカウントをお持ちではありませんか？",
+    "pwConfirm": "パスワード再入力",
+    "regAsSeiyu": "声優として登録",
+    "regAsSeiyuDesc": "登録した後、声優の情報編集機能が追加されます",
+    "noSampleMatched": "一致するサンプルは見つかりません",
+    "noSeiyuFiltered": "一致する情報は見つかりませんでした",
+    "noSeiyu": "まだ誰も登録していない",
+    "chipHelper": "半角スペース入力でタグを追加しです。",
+    "noSampleUploaded": "何もアップロードされていません",
+    "nopromo": "現在プロモーションはありません",
+    "nonews": "ただいま新しいサイト情報はありません",
+    "seiyuProfilePublish": "プロフィールを",
+    "selectFile": "ファイルを選択",
+    "iconFormat": "アップロード形式: JPG、PNG",
+    "iconSize": "推奨サイズ: 横150x縦150（pixel）",
+    "continueDelSample": "Continue to delete sample",
+    "nonrecoverableaction": "This action can not be recover",
+    "areyousure": "本当によろしいですか？",
+    "forgotpw": "パスワードをお忘れですか？"
+  },
+  "home": {
+    "info": "情報",
+    "seiyuRng": "声優・ボイスコ Pick Up!"
+  },
+  "search": {
+    "criteria": "検索条件"
+  },
+  "auth": {
+    "email": "メールアドレス",
+    "password": "パスワード",
+    "loginWEmail": "メールでログイン",
+    "signupWEmail": "メールで登録"
+  },
+  "profile": {
+    "icon": "アイコン",
+    "name": "名前",
+    "gender": "性別",
+    "intro": "自己紹介",
+    "page": "個人サイト",
+    "R": "全年齢",
+    "rating": "レーティング制限",
+    "hires": "ハイレゾ対応",
+    "possible": "可能ボイス",
+    "wish": "やりたい役",
+    "samples": "サンプル",
+    "M": "男性",
+    "F": "女性",
+    "public": "公開",
+    "private": "非公開",
+    "able": "対応",
+    "notable": "非対応",
+    "link": "関連リンク",
+    "voiceinfo": "ボイス情報"
+  },
+  "profileDetail": {
+    "contact": "連絡先",
+    "dlsiteBlogPart": "DLsite ブログパーツ",
+    "dlsiteScript": "HTMLコード",
+    "reception": "依頼受付状況",
+    "receptionDetail": "受付状況",
+    "precaution": "注意事項",
+    "fee": "依頼料金",
+    "equip": "収録機材",
+    "other": "そのほか",
+    "exp": "経験"
+  },
+  "samples": {
+    "cate": "キャラ"
+  },
+  "footer": {
+    "about": "VOICE-INFOについて",
+    "manual": "マニュアル",
+    "terms": "利用規約",
+    "privacy": "プライバシーポリシー"
   }
-  
+}
