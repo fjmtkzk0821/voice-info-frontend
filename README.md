@@ -20,6 +20,7 @@ This software uses the following open source packages:
 
 - [React](https://reactjs.org/)
 - [Node.js](https://nodejs.org/)
+- [Material UI](https://mui.com/)
 
 ## Related
 
