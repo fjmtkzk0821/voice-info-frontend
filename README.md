@@ -8,6 +8,11 @@
 </h1>
 
 <h4 align="center">A seiyu information website built on top of <a href="https://reactjs.org/" target="_blank">React</a>.</h4>
+<h4 align="center"><a href="https://voice-info.firebaseapp.com/" target="_blank">Click here to view the actual site</a>.</h4>
+
+## Key Features
+
+* A platform for freelance voice actor to register an account and publish their profile for the related, providing an easy way to find out your favourite voice actor for your product.
 
 ## Credits
 
